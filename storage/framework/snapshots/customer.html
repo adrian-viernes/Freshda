@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="csrf-token" content="dhgDXOiJnPYoO9g8Gl7JWEqOUkwCZYaFRSgpJXDL">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Fresh-DA — AI-powered fish freshness & species recognition for local vendors.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Fresh-DA">
+
+    <link rel="icon" href="http://localhost:8000/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="http://localhost:8000/icons/icon-192.png">
+    <link rel="manifest" href="http://localhost:8000/manifest.json">
+
+    <title>Fresh-DA - Fish Freshness &amp; Species Recognition</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+        
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/base.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/profile.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/sidebar.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/topbar.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/notifications.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/content.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/camera.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/batch.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/settings.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/history.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/inventory.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/export-card.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/reports.css?v=1792723535">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/dialogs.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/suppliers-deliveries.css?v=1792629593">
+            <link rel="stylesheet" href="http://localhost:8000/css/dashboard/phone-drawer.css?v=1792629593">
+    </head>
+
+<body>
+    <script>
+        /* Apply the saved theme before the first paint so every page — login,
+           dashboard — opens in the same light/dark state the user last chose
+           anywhere. `freshda-dark` is the shared flag; the dashboard's
+           settings blob is only a fallback for older visits. A view that
+           defines the `lockLightTheme` section (the landing page) opts out
+           and always renders light. */
+        (function () {
+            if (false) return;
+
+            var flag = null;
+            try {
+                flag = localStorage.getItem('freshda-dark');
+            } catch (e) {}
+
+            if (flag === null) {
+                try {
+                    var settings = JSON.parse(localStorage.getItem('freshda-settings') || 'null');
+                    if (settings && typeof settings === 'object' && settings.darkMode !== undefined) {
+                        flag = settings.darkMode ? '1' : '0';
+                    }
+                } catch (e) {}
+            }
+
+            if (flag === '1') document.body.classList.add('dark');
+        })();
+    </script>
+
+        <div class="app-shell">
+        <aside class="sidebar">
+        <div class="sidebar-brand">
+          <img src="http://localhost:8000/images/Freshda Logo.png" alt="Fresh-DA" class="sidebar-brand-img" />
+          Fresh-DA
+        </div>
+
+        <nav class="sidebar-nav" id="sidebarNav">
+          <div class="sidebar-nav-label" data-i18n="navGroup.overview">Overview</div>
+          <a data-page="dashboard" class="active"
+            ><i class="ri-dashboard-line"></i> <span data-i18n="nav.dashboard">Dashboard</span></a
+          >
+
+          <div class="sidebar-nav-label" data-i18n="navGroup.scan">Scan</div>
+          <a data-page="scan"
+            ><i class="ri-camera-lens-line"></i> <span data-i18n="nav.scan">Scan Fish</span></a
+          >
+          <a data-page="batch"
+            ><i class="ri-stack-line"></i> <span data-i18n="nav.batch">Batch Sampling</span></a
+          >
+          <a data-page="history"
+            ><i class="ri-history-line"></i> <span data-i18n="nav.history">Scan History</span></a
+          >
+
+          
+          <div class="sidebar-nav-label" data-i18n="navGroup.support">Support</div>
+          <a data-page="notifications">
+            <i class="ri-notification-3-line"></i> <span data-i18n="nav.notifications">Notifications</span>
+            <span class="nav-badge  hidden " id="sidebarNotifBadge">0</span>
+          </a>
+
+          <div class="sidebar-nav-label" data-i18n="navGroup.account">Account</div>
+          <a data-page="profile"
+            ><i class="ri-user-settings-line"></i> <span data-i18n="nav.profile">Profile</span></a
+          >
+          <a data-page="settings" id="sidebarSettingsBtn">
+            <i class="ri-settings-3-line"></i> <span data-i18n="nav.settings">Settings</span>
+          </a>
+          <a data-page="logout" class="danger"
+            ><i class="ri-logout-box-r-line"></i> <span data-i18n="nav.logout">Logout</span></a
+          >
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="sidebar-user" data-page="profile">
+            <div class="avatar">
+              SC
+                          </div>
+            <div class="sidebar-user-info">
+              <div class="name">Snapshot Customer</div>
+              <div class="role">Customer</div>
+            </div>
+            <i
+              class="ri-arrow-right-s-line"
+              style="color: var(--muted); font-size: 1.15rem"
+            ></i>
+          </div>
+        </div>
+      </aside>
+
+        <!-- Dimming layer for the phone sidebar drawer, opened by the topbar
+             hamburger button when the sidebar is off-canvas. -->
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+      <div class="main-area">
+        <header class="topbar">
+          <button
+            class="icon-btn sidebar-toggle"
+            id="sidebarToggle"
+            type="button"
+            title="Menu"
+            aria-label="Open menu"
+          >
+            <i class="ri-menu-line"></i>
+          </button>
+
+          <div class="search-wrapper">
+            <div class="search-input-group">
+              <i class="ri-search-line"></i>
+              <input
+                type="search"
+                class="search-input"
+                id="globalSearch"
+                placeholder="Search fish species, scans, inventory..."
+                data-i18n-placeholder="topbar.searchPlaceholder"
+              />
+              <button class="search-end-btn" type="button" id="searchBtn">
+                <i class="ri-search-line"></i> <span data-i18n="topbar.search">Search</span>
+              </button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+          </div>
+
+          <div class="topbar-actions" style="position: relative">
+            <select
+              class="lang-select"
+              id="langSelect"
+              title="Language"
+              data-setting-select="language"
+            >
+              <option value="en">🇺🇸 EN</option>
+              <option value="tl">🇵🇭 TL</option>
+            </select>
+
+            <button
+              class="dark-toggle"
+              id="darkToggle"
+              title="Toggle dark mode"
+              data-setting-toggle="darkMode"
+            >
+              <i class="ri-moon-line"></i>
+            </button>
+
+            <button
+              class="icon-btn"
+              title="Notifications"
+              id="notifBtn"
+              data-i18n-title="nav.notifications"
+            >
+              <i class="ri-notification-3-line"></i>
+              <span class="count-badge  hidden " id="notifCountBadge">0</span>
+            </button>
+
+            <button
+              class="icon-btn"
+              id="settingsBtn"
+              title="Settings"
+              data-i18n-title="nav.settings"
+            >
+              <i class="ri-settings-3-line"></i>
+            </button>
+            <div class="topbar-divider"></div>
+            <div class="topbar-user-menu">
+              <button
+                class="topbar-user"
+                type="button"
+                id="topbarUserBtn"
+                title="Snapshot Customer"
+                aria-haspopup="menu"
+                aria-expanded="false"
+              >
+                <span class="topbar-avatar">
+                  SC
+                                  </span>
+                <span class="topbar-user-name">Snapshot Customer</span>
+                <i class="ri-arrow-down-s-line topbar-user-caret"></i>
+              </button>
+              <div
+                class="topbar-user-dropdown hidden"
+                id="topbarUserDropdown"
+                role="menu"
+              >
+                <button
+                  class="topbar-user-item"
+                  type="button"
+                  data-page="profile"
+                  role="menuitem"
+                >
+                  <i class="ri-user-settings-line"></i>
+                  <span data-i18n="nav.profile">Profile</span>
+                </button>
+                <button
+                  class="topbar-user-item danger"
+                  type="button"
+                  data-page="logout"
+                  role="menuitem"
+                >
+                  <i class="ri-logout-box-r-line"></i>
+                  <span data-i18n="nav.logout">Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="content">
+          <!-- ============ DASHBOARD ============ -->
+          <section id="dashboard-section" class="page-section">
+            <div class="page-header">
+              <h1 data-i18n="page.dashboard.title">Dashboard</h1>
+              <p class="text-muted">Welcome back, Snapshot Customer · Customer</p>
+              <div class="page-header-actions">
+                <div class="filter-chip" style="cursor: default">
+                  <i class="ri-calendar-line"></i> Today
+                  <span class="filter-chip-date" id="todayDate"
+                    >Fri, Oct 23, 2026</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-card total">
+  <div class="stat-top">
+    <span class="stat-label">Total Scans</span>
+    <div class="stat-icon total">
+      <i class="ri-history-line"></i>
+    </div>
+  </div>
+  <span class="stat-value"  id="statTotal">0</span>
+  <span class="stat-sub">+0 this week</span>
+</div>
+              <div class="stat-card fresh">
+  <div class="stat-top">
+    <span class="stat-label">Fresh</span>
+    <div class="stat-icon fresh">
+      <i class="ri-checkbox-circle-line"></i>
+    </div>
+  </div>
+  <span class="stat-value"  id="statFresh">0</span>
+  <span class="stat-sub">0% of total</span>
+</div>
+              <div class="stat-card moderate">
+  <div class="stat-top">
+    <span class="stat-label">Moderate</span>
+    <div class="stat-icon moderate">
+      <i class="ri-error-warning-line"></i>
+    </div>
+  </div>
+  <span class="stat-value"  id="statModerate">0</span>
+  <span class="stat-sub">0% of total</span>
+</div>
+              <div class="stat-card notfresh">
+  <div class="stat-top">
+    <span class="stat-label">Not Fresh</span>
+    <div class="stat-icon notfresh">
+      <i class="ri-close-circle-line"></i>
+    </div>
+  </div>
+  <span class="stat-value"  id="statNotFresh">0</span>
+  <span class="stat-sub">0% of total</span>
+</div>
+            </div>
+
+            <div class="grid-2">
+              <div class="card">
+                <div class="card-header">
+                  <span class="card-title"
+                    ><i class="ri-history-line"></i> Recent Scans</span
+                  >
+                  <a class="view-all" data-page="history"
+                    >View All <i class="ri-arrow-right-s-line"></i
+                  ></a>
+                </div>
+                <div class="scan-list" id="recentScansList">
+                                      <p class="text-muted" style="text-align:center; padding:1.25rem 0">
+                      No scans yet. Scan your first fish!
+                    </p>
+                                  </div>
+              </div>
+
+              <div class="flex-col gap-2">
+                <div class="card">
+                  <div class="card-header">
+                    <span class="card-title"
+                      ><i class="ri-sparkling-line"></i> Quick Actions</span
+                    >
+                  </div>
+                  <div class="quick-actions">
+                    <a class="action-btn" data-page="scan"
+                      ><i class="ri-camera-lens-line"></i> Scan Fish</a
+                    >
+                                        <a class="action-btn" data-page="notifications"
+                      ><i class="ri-notification-3-line"></i> Notifications</a
+                    >
+                                      </div>
+                </div>
+
+                              </div>
+            </div>
+
+            <div class="card">
+              <div class="ai-status">
+                <div class="ai-status-left">
+                  <div class="ai-icon"><i class="ri-cpu-line"></i></div>
+                  <div class="ai-meta">
+                    <strong>AI Service</strong>
+                    <span>Not configured · offline analysis</span>
+                  </div>
+                </div>
+                <span class="badge ready"
+                  ><span class="status-dot"></span> Ready</span
+                >
+              </div>
+            </div>
+          </section>          <!-- ============ NOTIFICATIONS PAGE ============ -->
+          <section id="notifications-section" class="page-section hidden">
+            <div class="page-header">
+              <h1 data-i18n="page.notifications.title">Notifications</h1>
+              <p class="text-muted" data-i18n="page.notifications.sub">
+                All your alerts, scan updates, and system messages
+              </p>
+              <div class="page-header-actions">
+                <button
+                  class="btn btn-secondary"
+                  id="notifPageMarkReadBtn"
+                  data-confirm="Mark every notification as read?"
+                  data-confirm-title="Mark all as read"
+                  data-confirm-note="All unread alerts will be cleared from your badge count."
+                  data-confirm-ok="Mark all read"
+                  data-confirm-icon="ri-check-double-line"
+                >
+                  <i class="ri-check-double-line"></i> Mark all as read
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  id="notifPageClearAllBtn"
+                  data-confirm="Clear all notifications?"
+                  data-confirm-title="Clear notifications"
+                  data-confirm-note="Every notification in the list will be deleted."
+                  data-confirm-ok="Clear all"
+                  data-confirm-icon="ri-delete-bin-line"
+                  data-confirm-danger="1"
+                >
+                  <i class="ri-delete-bin-line"></i> Clear all
+                </button>
+              </div>
+            </div>
+
+            <div class="notif-page-filters" id="notifPageFilters">
+              <span class="filter-chip-outline active" data-filter="all">
+                <i class="ri-filter-3-line"></i> All
+              </span>
+              <span class="filter-chip-outline" data-filter="unread"
+                >Unread</span
+              >
+              <span class="filter-chip-outline" data-filter="scans">Scans</span>
+              <span class="filter-chip-outline" data-filter="system"
+                >System</span
+              >
+            </div>
+
+            <div class="notif-page-list" id="notifPageList"></div>
+          </section>
+          <!-- ============ SCAN FISH ============ -->
+          <section id="scan-section" class="page-section hidden">
+            <div class="page-header">
+              <h1 data-i18n="page.scan.title">Scan Fish</h1>
+              <p class="text-muted" data-i18n="page.scan.sub">
+                Capture or upload a fish image for AI analysis
+              </p>
+            </div>
+
+            <div class="grid-2">
+              <div class="card">
+                <div class="card-header">
+                  <span class="card-title"
+                    ><i class="ri-camera-lens-line"></i> Capture Image</span
+                  >
+                </div>
+                <div class="camera-preview" id="cameraPreview">
+                  <div class="camera-placeholder" id="cameraPlaceholder">
+                    <i class="ri-camera-line"></i>
+                    <p>Camera Preview</p>
+                    <span>Ensure Good Lighting And the Fish Is Clearly Visible</span>
+                  </div>
+                  <video
+                    id="cameraVideo"
+                    class="camera-video"
+                    playsinline
+                    autoplay
+                    muted
+                  ></video>
+                  <img
+                    id="cameraSnapshot"
+                    class="camera-snapshot"
+                    alt="Captured fish"
+                  />
+                  <span class="camera-live-badge hidden" id="cameraLiveBadge">
+                    <span class="camera-live-dot"></span>LIVE
+                  </span>
+                  <canvas id="cameraCanvas" class="hidden"></canvas>
+                </div>
+                <div class="camera-actions">
+                  <button class="btn btn-primary btn-block" id="openCameraBtn">
+                    <i class="ri-camera-line"></i> Open Camera
+                  </button>
+                  <button
+                    class="btn btn-primary btn-block hidden"
+                    id="captureBtn"
+                  >
+                    <i class="ri-camera-lens-line"></i> Capture Photo
+                  </button>
+                  <button
+                    class="btn btn-secondary hidden"
+                    id="switchCameraBtn"
+                    title="Switch camera"
+                  >
+                    <i class="ri-camera-switch-line"></i>
+                  </button>
+                  <button
+                    class="btn btn-secondary hidden"
+                    id="closeCameraBtn"
+                    title="Close camera"
+                  >
+                    <i class="ri-close-line"></i>
+                  </button>
+                  <button
+                    class="btn btn-secondary btn-block"
+                    id="uploadFromScanBtn"
+                  >
+                    <i class="ri-upload-2-line"></i> Upload Image
+                  </button>
+                </div>
+                <input
+                  type="file"
+                  id="scanCameraInput"
+                  accept="image/*"
+                  capture="environment"
+                  style="display: none"
+                />
+                <p
+                  class="text-muted text-xs"
+                  style="margin-top: 0.9rem; text-align: center"
+                >
+                  <i class="ri-information-line"></i> Max file size: 10 MB ·
+                  JPG, PNG
+                </p>
+              </div>
+
+              <div class="flex-col gap-2">
+                <div class="card">
+                  <div class="card-header">
+                    <span class="card-title"
+                      ><i class="ri-upload-cloud-line"></i> Upload Fish
+                      Image</span
+                    >
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Choose File</label>
+                    <label class="upload-drop" id="uploadDrop" for="uploadFile">
+                      <span class="upload-drop-icon">
+                        <i class="ri-upload-cloud-2-line"></i>
+                      </span>
+                      <span class="upload-drop-title">Click To Choose an Image</span>
+                      <span class="upload-drop-sub">PNG or JPG · up to 10 MB</span>
+                      <input
+                        type="file"
+                        id="uploadFile"
+                        class="hidden"
+                        accept="image/*"
+                      />
+                    </label>
+                    <div class="upload-file-chip hidden" id="uploadFileChip">
+                      <i class="ri-file-image-line"></i>
+                      <span class="upload-file-name" id="uploadFileName"></span>
+                      <button
+                        type="button"
+                        class="upload-file-remove"
+                        id="uploadFileClear"
+                        aria-label="Remove selected image"
+                      >
+                        <i class="ri-close-line"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Image Preview</label>
+                    <div class="image-preview-box" id="imagePreview">
+                      <i
+                        class="ri-image-add-line"
+                        style="font-size: 1.9rem; color: var(--muted)"
+                      ></i>
+                      <p class="text-muted text-xs" style="margin-top: 0.35rem">
+                        Preview will appear here
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    class="btn btn-primary btn-block"
+                    id="analyzeBtn"
+                    data-confirm="Run the AI freshness and species analysis on this image?"
+                    data-confirm-title="Analyze fish image"
+                    data-confirm-note="The result is saved to your scan history."
+                    data-confirm-ok="Start analysis"
+                    data-confirm-icon="ri-cpu-line"
+                  >
+                    <i class="ri-cpu-line"></i> Analyze Fish
+                  </button>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <span class="card-title"
+                      ><i class="ri-information-line"></i> Processing
+                      States</span
+                    >
+                  </div>
+                  <div class="processing-list">
+                    <div class="processing-item">
+                      <i class="ri-loader-4-line ok"></i> Analyzing your fish
+                      image...
+                    </div>
+                    <div class="processing-item">
+                      <i class="ri-check-line ok"></i> Analysis Complete
+                    </div>
+                    <div class="processing-item">
+                      <i class="ri-error-warning-line warn"></i> Unable to
+                      analyze this image
+                    </div>
+                    <div class="processing-item">
+                      <i class="ri-cloud-off-line warn"></i> AI service
+                      unavailable
+                    </div>
+                    <div class="processing-item">
+                      <i class="ri-time-line warn"></i> Analysis timed out
+                    </div>
+                  </div>
+                  <p
+                    class="text-muted text-xs"
+                    style="
+                      margin-top: 0.9rem;
+                      border-top: 1px solid var(--border);
+                      padding-top: 0.75rem;
+                    "
+                  >
+                    Freshness assessment is visible/image-based only. Does not
+                    determine microbial spoilage, odor, or elasticity.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- ============ BATCH SAMPLING (UPDATED) ============ -->
+          <section id="batch-section" class="page-section hidden">
+            <div class="page-header">
+              <h1 data-i18n="page.batch.title">Batch Sampling Mode</h1>
+              <p class="text-muted" data-i18n="page.batch.sub">
+                Capture 3–5 photos of fish to analyze those fish and verify the
+                freshness of the whole batch
+              </p>
+            </div>
+
+            <!-- Capture Card (live camera, same capture flow as Scan Fish) -->
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title"
+                  ><i class="ri-camera-lens-line"></i> Capture Fish Photo</span
+                >
+                <span class="batch-sample-counter" id="batchCaptureQuota">
+                  <i class="ri-image-line"></i> 0 of 5 captured
+                </span>
+              </div>
+              <div class="camera-preview" id="batchCamFrame">
+                <div class="camera-placeholder">
+                  <i class="ri-camera-line"></i>
+                  <p>Camera Preview</p>
+                  <span>Capture 3 To 5 Fish Photos, One At a Time</span>
+                </div>
+                <video
+                  id="batchCamVideo"
+                  class="camera-video"
+                  playsinline
+                  autoplay
+                  muted
+                ></video>
+                <img
+                  id="batchCamSnapshot"
+                  class="camera-snapshot"
+                  alt="Captured fish"
+                />
+                <span class="camera-live-badge hidden" id="batchCamLiveBadge">
+                  <span class="camera-live-dot"></span>LIVE
+                </span>
+                <canvas id="batchCamCanvas" class="hidden"></canvas>
+              </div>
+              <div class="camera-actions">
+                <button
+                  class="btn btn-primary btn-block"
+                  id="batchOpenCameraBtn"
+                >
+                  <i class="ri-camera-line"></i> Open Camera
+                </button>
+                <button
+                  class="btn btn-primary btn-block hidden"
+                  id="batchCaptureBtn"
+                >
+                  <i class="ri-camera-lens-line"></i> Capture Photo
+                </button>
+                <button
+                  class="btn btn-secondary hidden"
+                  id="batchSwitchCameraBtn"
+                  title="Switch camera"
+                >
+                  <i class="ri-camera-switch-line"></i>
+                </button>
+                <button
+                  class="btn btn-secondary hidden"
+                  id="batchCloseCameraBtn"
+                  title="Close camera"
+                >
+                  <i class="ri-close-line"></i>
+                </button>
+                <button class="btn btn-secondary btn-block" id="batchUploadBtn">
+                  <i class="ri-upload-2-line"></i> Upload Photo
+                </button>
+              </div>
+              <input
+                type="file"
+                id="batchCameraInput"
+                accept="image/*"
+                capture="environment"
+                style="display: none"
+              />
+              <input
+                type="file"
+                id="batchUploadInput"
+                accept="image/*"
+                style="display: none"
+              />
+              <button
+                class="btn btn-primary btn-block hidden"
+                id="batchAnalyzeBtn"
+                data-confirm="Analyze this photo and add it to the batch?"
+                data-confirm-title="Analyze fish photo"
+                data-confirm-note="The captured photo is analyzed and added to the current batch."
+                data-confirm-ok="Analyze &amp; add"
+                data-confirm-icon="ri-cpu-line"
+              >
+                <i class="ri-cpu-line"></i> Analyze &amp; Add to Batch
+              </button>
+              <p
+                class="text-muted text-xs"
+                style="margin-top: 0.9rem; text-align: center"
+              >
+                <i class="ri-information-line"></i> Max file size: 10 MB · JPG,
+                PNG · 3–5 photos per batch
+              </p>
+            </div>
+
+            <!-- Progress Card -->
+            <div class="batch-progress-card">
+              <div class="batch-progress-icon">
+                <i class="ri-stack-line"></i>
+              </div>
+              <div class="batch-progress-info">
+                <div class="batch-progress-title">
+                  Batch Verification Progress
+                  <span
+                    class="batch-status-badge pending"
+                    id="batchStatusBadge"
+                  >
+                    <i class="ri-time-line"></i> Need more photos
+                  </span>
+                </div>
+                <div class="batch-progress-desc">
+                  Capture <strong>3 To 5 Photos Of Fish</strong> so each fish
+                  can be analyzed and the freshness of the entire batch
+                  verified.
+                </div>
+                <div class="batch-progress-bar">
+                  <div class="batch-progress-fill" id="batchProgressFill"></div>
+                </div>
+                <div class="batch-progress-count">
+                  <span
+                    ><strong id="batchCurrentCount">0</strong> photos
+                    captured · <strong>3–5</strong> Required</span
+                  >
+                  <span id="batchProgressPercent">0%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Requirement Note -->
+            <div class="batch-requirement-note" id="batchRequirementNote">
+              <i class="ri-information-line"></i>
+              <span>
+                <strong>Requirement:</strong> Capture at least
+                <strong>3</strong> And Up To <strong>5 Photos Of Fish</strong>
+                in this batch so each fish is analyzed and a reliable freshness
+                verdict can be computed for the whole batch.
+              </span>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title"
+                  ><i class="ri-stack-line"></i> Current Batch Photos</span
+                >
+                <span class="batch-sample-counter" id="batchCountBadge">
+                  <i class="ri-image-line"></i> 0 photos
+                </span>
+              </div>
+              <div class="scan-list" id="batchList">
+                <!-- Empty state handled by JS -->
+              </div>
+
+              <div class="batch-actions-bar">
+                <button
+                  class="btn btn-secondary"
+                  id="cancelBatchBtn"
+                  data-confirm="Discard all captured photos in this batch?"
+                  data-confirm-title="Cancel batch"
+                  data-confirm-note="The photos you captured so far will be removed."
+                  data-confirm-ok="Cancel batch"
+                  data-confirm-danger="1"
+                >
+                  <i class="ri-close-line"></i> Cancel Batch
+                </button>
+                <button
+                  class="btn btn-primary"
+                  id="finishBatchBtn"
+                  disabled
+                  data-confirm="Verify this batch and save its verdict?"
+                  data-confirm-title="Verify batch"
+                  data-confirm-note="The combined verdict is saved to your scan history."
+                  data-confirm-ok="Verify &amp; save"
+                  data-confirm-icon="ri-check-double-line"
+                >
+                  <i class="ri-check-double-line"></i> Finish &amp; Verify Batch
+                </button>
+              </div>
+            </div>
+
+            <!-- Batch Summary (only shows when batch is complete) -->
+            <div class="batch-summary-card hidden" id="batchSummaryCard">
+              <div class="batch-summary-header">
+                <h3><i class="ri-bar-chart-box-line"></i> Batch Summary</h3>
+                <span class="batch-status-badge complete">
+                  <i class="ri-check-double-line"></i> Verification Complete
+                </span>
+              </div>
+
+              <div class="batch-summary-grid">
+                <div class="batch-summary-item">
+                  <div class="batch-summary-icon fresh">
+                    <i class="ri-checkbox-circle-line"></i>
+                  </div>
+                  <div>
+                    <div class="batch-summary-value" id="batchFreshCount">
+                      0
+                    </div>
+                    <div class="batch-summary-label">Fresh</div>
+                  </div>
+                </div>
+                <div class="batch-summary-item">
+                  <div class="batch-summary-icon moderate">
+                    <i class="ri-error-warning-line"></i>
+                  </div>
+                  <div>
+                    <div class="batch-summary-value" id="batchModerateCount">
+                      0
+                    </div>
+                    <div class="batch-summary-label">Moderate</div>
+                  </div>
+                </div>
+                <div class="batch-summary-item">
+                  <div class="batch-summary-icon notfresh">
+                    <i class="ri-close-circle-line"></i>
+                  </div>
+                  <div>
+                    <div class="batch-summary-value" id="batchNotFreshCount">
+                      0
+                    </div>
+                    <div class="batch-summary-label">Not Fresh</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="batch-overall-verdict" id="batchOverallVerdict">
+                <i class="ri-shield-check-line"></i>
+                <div>
+                  <strong
+                    >Batch Verdict:
+                    <span id="batchVerdictLabel">—</span></strong
+                  >
+                  <span id="batchVerdictDesc">Awaiting Analysis Completion</span>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- ============ SCAN HISTORY ============ -->
+          <section id="history-section" class="page-section hidden">
+            <div class="page-header">
+              <h1 data-i18n="page.history.title">Scan History</h1>
+              <p class="text-muted" data-i18n="page.history.sub">
+                Your previous fish scans and freshness results
+              </p>
+              <div class="page-header-actions" id="historyFilters">
+                <input
+                  type="search"
+                  class="history-search"
+                  id="historySearch"
+                  placeholder="Search scans..."
+                  aria-label="Search scans"
+                />
+                <span class="filter-chip-outline active" data-filter="all"
+                  ><i class="ri-filter-3-line"></i> All</span
+                >
+                <span class="filter-chip-outline" data-filter="fresh"
+                  >Fresh</span
+                >
+                <span class="filter-chip-outline" data-filter="moderate"
+                  >Moderate</span
+                >
+                <span class="filter-chip-outline" data-filter="notfresh"
+                  >Not Fresh</span
+                >
+                <select class="form-input history-sort" id="historySort" aria-label="Sort scans">
+                  <option value="newest" data-i18n="page.history.sortNewest">Newest First</option>
+                  <option value="oldest" data-i18n="page.history.sortOldest">Oldest First</option>
+                  <option value="fresh-desc" data-i18n="page.history.sortFreshDesc">Freshness: High To Low</option>
+                  <option value="fresh-asc" data-i18n="page.history.sortFreshAsc">Freshness: Low To High</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- ============ EXPORT SCAN DATA (vendor-only) ============ -->
+            
+            <div class="table-card">
+              <table class="data-table" id="historyTable">
+                <thead>
+                  <tr>
+                    <th>Fish</th>
+                    <th>Species</th>
+                    <th>Freshness</th>
+                    <th>Confidence</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody id="historyBody">
+                                      <tr>
+                      <td colspan="6">
+                        <p class="text-muted" style="text-align:center; padding:1.5rem 0">
+                          No scans yet. Head to Scan Fish to get started!
+                        </p>
+                      </td>
+                    </tr>
+                                  </tbody>
+              </table>
+            </div>
+          </section>
+
+                    <!-- ============ PROFILE ============ -->
+          <section id="profile-section" class="page-section hidden">
+            <div class="page-header">
+              <h1 data-i18n="page.profile.title">Profile</h1>
+              <p class="text-muted" data-i18n="page.profile.sub">
+                Manage your account information
+              </p>
+            </div>
+
+            <div class="profile-grid">
+
+              <!-- ===== SIDEBAR ===== -->
+              <aside class="profile-sidebar">
+                <div class="sidebar-top"></div>
+
+                <div class="sidebar-avatar-wrap">
+                  <div
+                    class="profile-avatar sidebar-avatar"
+                    id="profileAvatar"
+                    data-profile-picture-path=""
+                    title="Snapshot Customer"
+                  >
+                    SC
+                  </div>
+                </div>
+
+                <div class="sidebar-photo-actions">
+                  <label class="btn btn-secondary btn-sm" id="changeProfilePictureBtn">
+                    <i class="ri-camera-line"></i>
+                    <span data-i18n="profile.changePhoto">Change Photo</span>
+                    <input
+                      type="file"
+                      id="profilePictureInput"
+                      class="hidden"
+                      accept="image/png, image/jpeg, image/webp"
+                    />
+                  </label>
+                  <button
+                    class="btn btn-secondary btn-sm"
+                    id="removeProfilePictureBtn"
+                    type="button"
+                    style="display: none"
+                    data-confirm="Remove your profile photo?"
+                    data-confirm-title="Remove photo"
+                    data-confirm-note="Your initials will be shown instead."
+                    data-confirm-ok="Remove photo"
+                    data-confirm-icon="ri-delete-bin-line"
+                    data-confirm-danger="1"
+                  >
+                    <i class="ri-delete-bin-line"></i>
+                    <span data-i18n="profile.removePhoto">Remove</span>
+                  </button>
+                </div>
+
+                <div class="sidebar-info">
+                  <div class="profile-display-name sidebar-name">Snapshot Customer</div>
+                  <div class="profile-display-email sidebar-email">customer@snapshot.test</div>
+                  <span class="sidebar-role">
+                    <i class="ri-verified-badge-line"></i>
+                    Customer
+                  </span>
+                </div>
+
+                <div class="sidebar-divider"></div>
+
+                <div class="sidebar-stats">
+                  <div class="sidebar-stat">
+                    <div class="sidebar-stat-value">0</div>
+                    <div class="sidebar-stat-label" data-i18n="profile.scans">Scans</div>
+                  </div>
+                  <div class="sidebar-stat">
+                    <div class="sidebar-stat-value">0</div>
+                    <div class="sidebar-stat-label" data-i18n="profile.fresh">Fresh</div>
+                  </div>
+                </div>
+
+                <div class="sidebar-actions">
+                  <button class="btn btn-primary btn-block" id="editProfileBtn" type="button">
+                    <i class="ri-edit-line"></i>
+                    <span data-i18n="profile.editProfile">Edit Profile</span>
+                  </button>
+                  <button class="btn btn-secondary btn-block" id="changePasswordBtn" type="button">
+                    <i class="ri-lock-line"></i>
+                    <span data-i18n="profile.changePassword">Change Password</span>
+                  </button>
+                  <button class="btn btn-danger btn-block" data-page="logout" type="button">
+                    <i class="ri-logout-box-r-line"></i>
+                    <span data-i18n="nav.logout">Logout</span>
+                  </button>
+                </div>
+              </aside>
+
+              <!-- ===== MAIN ===== -->
+              <main class="profile-main">
+
+                <!-- PERSONAL INFORMATION -->
+                <section class="panel">
+                  <div class="panel-header">
+                    <div class="panel-header-left">
+                      <div class="panel-header-icon">
+                        <i class="ri-user-line"></i>
+                      </div>
+                      <div>
+                        <h2 data-i18n="profile.contactDetails">Contact Details</h2>
+                        <p data-i18n="profile.personalSub">Your Basic Account Details</p>
+                      </div>
+                    </div>
+                    <span class="panel-header-action" id="editPersonalBtn">
+                      <i class="ri-pencil-line"></i>
+                      <span data-i18n="profile.edit">Edit</span>
+                    </span>
+                  </div>
+
+                  <div class="detail-list">
+                    <div id="profileForm" class="profile-form" style="display: none">
+                      <div class="form-group">
+                        <label class="form-label" for="profileName">
+                          <span data-i18n="profile.fullName">Full Name</span>
+                        </label>
+                        <input
+                          type="text"
+                          class="form-input"
+                          id="profileName"
+                          name="name"
+                          value="Snapshot Customer"
+                          autocomplete="name"
+                          maxlength="255"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="profileEmail">
+                          <span data-i18n="profile.emailAddress">Email Address</span>
+                        </label>
+                        <input
+                          type="email"
+                          class="form-input"
+                          id="profileEmail"
+                          name="email"
+                          value="customer@snapshot.test"
+                          autocomplete="email"
+                          maxlength="255"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="profileContact">
+                          <span data-i18n="profile.contactNumber">Contact Number</span>
+                          <span class="text-muted"> (Optional)</span>
+                        </label>
+                        <input
+                          type="text"
+                          class="form-input"
+                          id="profileContact"
+                          name="contact_number"
+                          value=""
+                          autocomplete="tel"
+                          maxlength="64"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label class="form-label" for="profileAddress">
+                          <span data-i18n="profile.address">Address</span>
+                          <span class="text-muted"> (Optional)</span>
+                        </label>
+                        <textarea
+                          class="form-input"
+                          id="profileAddress"
+                          name="address"
+                          rows="3"
+                          maxlength="500"
+                        ></textarea>
+                      </div>
+
+                      <div class="profile-form-actions">
+                        <button
+                          class="btn btn-primary btn-block"
+                          id="saveProfileBtn"
+                          type="button"
+                          data-confirm="Save these changes to your profile?"
+                          data-confirm-title="Save profile changes"
+                          data-confirm-note="Your name, email, contact number and address will be updated."
+                          data-confirm-ok="Save changes"
+                          data-confirm-icon="ri-save-line"
+                        >
+                          <i class="ri-save-line"></i>
+                          <span data-i18n="profile.saveChanges">Save Changes</span>
+                        </button>
+                        <button
+                          class="btn btn-secondary"
+                          id="cancelProfileBtn"
+                          type="button"
+                        >
+                          <i class="ri-close-line"></i>
+                          <span data-i18n="profile.cancel">Cancel</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div id="profileView" class="profile-view">
+                      <div class="profile-view-field">
+                        <span class="profile-view-label" data-i18n="profile.fullName">
+                          Full name
+                        </span>
+                        <span class="profile-view-value" id="viewName">Snapshot Customer</span>
+                      </div>
+
+                      <div class="profile-view-field">
+                        <span class="profile-view-label" data-i18n="profile.emailAddress">
+                          Email address
+                        </span>
+                        <span class="profile-view-value" id="viewEmail">customer@snapshot.test</span>
+                      </div>
+
+                      
+                      
+                      <div class="profile-view-actions">
+                        <button
+                          class="btn btn-primary btn-block"
+                          id="editProfileBtnView"
+                          type="button"
+                        >
+                          <i class="ri-edit-line"></i>
+                          <span data-i18n="profile.editProfile">Edit Profile</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- ACCOUNT & SECURITY -->
+                <section class="panel">
+                  <div class="panel-header">
+                    <div class="panel-header-left">
+                      <div class="panel-header-icon">
+                        <i class="ri-shield-keyhole-line"></i>
+                      </div>
+                      <div>
+                        <h2 data-i18n="profile.accountSecurity">Account &amp; security</h2>
+                        <p data-i18n="profile.accountSecuritySub">
+                          Manage your account status
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="detail-list">
+                    <div class="detail-row">
+                      <div class="detail-label">
+                        <i class="ri-briefcase-4-line"></i>
+                        <span data-i18n="set.role">Role</span>
+                      </div>
+                      <div class="detail-value">Customer</div>
+                    </div>
+
+                    <div class="detail-row">
+                      <div class="detail-label">
+                        <i class="ri-calendar-check-line"></i>
+                        <span data-i18n="profile.memberSince">Member Since</span>
+                      </div>
+                      <div class="detail-value muted">
+                        October 23, 2026
+                      </div>
+                    </div>
+
+                    <div class="detail-row">
+                      <div class="detail-label">
+                        <i class="ri-shield-check-line"></i>
+                        <span data-i18n="profile.accountStatus">Account Status</span>
+                      </div>
+                      <div class="detail-value">
+                        <span class="badge success">
+                          <i class="ri-checkbox-circle-fill"></i>
+                          <span data-i18n="profile.active">Active</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="detail-row">
+                      <div class="detail-label">
+                        <i class="ri-lock-password-line"></i>
+                        <span data-i18n="profile.password">Password</span>
+                      </div>
+                      <div class="detail-value">
+                        <button
+                          class="btn btn-secondary btn-sm"
+                          id="profileChangePasswordBtn"
+                          type="button"
+                        >
+                          <i class="ri-lock-password-line"></i>
+                          <span data-i18n="profile.changePassword">Change Password</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+              </main>
+            </div>
+          </section>
+          <!-- ============ SETTINGS ============ -->
+          <section id="settings-section" class="page-section hidden">
+            <div class="page-header">
+              <h1 data-i18n="page.settings.title">Settings</h1>
+              <p class="text-muted" data-i18n="page.settings.sub">
+                Customize your app experience
+              </p>
+            </div>
+
+            <div class="settings-page">
+              <!-- ===== Appearance ===== -->
+              <div class="card settings-card">
+                <div class="card-header">
+                  <span class="card-title">
+                    <i class="ri-palette-line"></i>
+                    <span data-i18n="set.appearance">Appearance</span>
+                  </span>
+                </div>
+                <div class="settings-group">
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-moon-line"></i>
+                      <div>
+                        <span data-i18n="set.darkMode">Dark Mode</span>
+                        <span class="settings-row-sub" data-i18n="set.darkModeSub">Switch To a Darker Colour Scheme</span>
+                      </div>
+                    </div>
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="pageDarkToggle"
+                        data-setting-checkbox="darkMode"
+                      />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ===== Language ===== -->
+              <div class="card settings-card">
+                <div class="card-header">
+                  <span class="card-title">
+                    <i class="ri-global-line"></i>
+                    <span data-i18n="set.language">Language</span>
+                  </span>
+                </div>
+                <div class="settings-group">
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-translate-2"></i>
+                      <div>
+                        <span data-i18n="set.appLanguage">App Language</span>
+                        <span class="settings-row-sub" data-i18n="set.appLanguageSub">App Display Language</span>
+                      </div>
+                    </div>
+                    <select
+                      class="settings-select"
+                      id="pageLangSelect"
+                      data-setting-select="language"
+                    >
+                      <option value="en">🇺🇸 English</option>
+                      <option value="tl">🇵🇭 Tagalog</option>
+                    </select>
+                  </div>
+                </div>
+                <p class="settings-note" data-i18n="set.languageNote">
+                  Navigation, page headings and the whole settings screen are
+                  translated. Live scan results and toasts stay in English.
+                </p>
+              </div>
+
+              <!-- ===== AI & Scan ===== -->
+              <div class="card settings-card">
+                <div class="card-header">
+                  <span class="card-title">
+                    <i class="ri-cpu-line"></i>
+                    <span data-i18n="set.aiScan">AI &amp; scanning</span>
+                  </span>
+                </div>
+                <div class="settings-group">
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-server-line"></i>
+                      <div>
+                        <span data-i18n="set.aiService">AI Service</span>
+                        <span class="settings-row-sub">Offline Analysis</span>
+                      </div>
+                    </div>
+                    <span class="badge notfresh">Not Configured</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ===== Profile & Account ===== -->
+              <div class="card settings-card">
+                <div class="card-header">
+                  <span class="card-title">
+                    <i class="ri-user-settings-line"></i>
+                    <span data-i18n="set.account">Profile &amp; account</span>
+                  </span>
+                </div>
+                <div class="settings-group">
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-user-line"></i>
+                      <div>
+                        <span data-i18n="set.name">Name</span>
+                        <span class="settings-row-sub">Snapshot Customer</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-mail-line"></i>
+                      <div>
+                        <span data-i18n="set.email">Email</span>
+                        <span class="settings-row-sub">customer@snapshot.test</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-shield-user-line"></i>
+                      <div>
+                        <span data-i18n="set.role">Role</span>
+                        <span class="settings-row-sub">Customer</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-edit-line"></i>
+                      <div>
+                        <span data-i18n="set.manageProfile">Manage Profile</span>
+                        <span class="settings-row-sub" data-i18n="set.manageProfileSub">Update Your Name, Email And Password</span>
+                      </div>
+                    </div>
+                    <button class="btn btn-secondary" data-page="profile">
+                      <i class="ri-arrow-right-line"></i>
+                      <span data-i18n="set.open">Open</span>
+                    </button>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-lock-password-line"></i>
+                      <div>
+                        <span data-i18n="set.changePassword">Change Password</span>
+                        <span class="settings-row-sub" data-i18n="set.changePasswordSub">Update Your Account Password</span>
+                      </div>
+                    </div>
+                    <button class="btn btn-secondary" id="settingsChangePasswordBtn">
+                      <i class="ri-arrow-right-line"></i>
+                      <span data-i18n="set.open">Open</span>
+                    </button>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-logout-box-r-line"></i>
+                      <div>
+                        <span data-i18n="set.logout">Log Out</span>
+                        <span class="settings-row-sub" data-i18n="set.logoutSub">End This Session</span>
+                      </div>
+                    </div>
+                    <button class="btn btn-danger" data-page="logout">
+                      <i class="ri-logout-box-r-line"></i>
+                      <span data-i18n="nav.logout">Logout</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ===== System / About ===== -->
+              <div class="card settings-card">
+                <div class="card-header">
+                  <span class="card-title">
+                    <i class="ri-information-line"></i>
+                    <span data-i18n="set.system">System &amp; about</span>
+                  </span>
+                </div>
+                <div class="settings-group">
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-price-tag-3-line"></i>
+                      <div>
+                        <span data-i18n="set.version">Version</span>
+                        <span class="settings-row-sub">Fresh‑DA PWA v1.0.0</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-database-2-line"></i>
+                      <div>
+                        <span data-i18n="set.cache">Offline Cache</span>
+                        <span class="settings-row-sub" id="settingsCacheName">Freshda-v5</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-camera-lens-line"></i>
+                      <div>
+                        <span data-i18n="set.cameraSupport">Camera Support</span>
+                        <span class="settings-row-sub" id="settingsCameraSupport">Checking…</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row-label">
+                      <i class="ri-restart-line"></i>
+                      <div>
+                        <span data-i18n="set.reset">Reset Preferences</span>
+                        <span class="settings-row-sub" data-i18n="set.resetSub">Restore the Default Settings On This Device</span>
+                      </div>
+                    </div>
+                    <button
+                      class="btn btn-danger"
+                      id="resetPreferencesBtn"
+                      data-confirm="Reset all preferences on this device?"
+                      data-confirm-title="Reset preferences"
+                      data-confirm-note="Dark mode, language and scan settings return to their defaults."
+                      data-confirm-ok="Reset"
+                      data-confirm-icon="ri-restart-line"
+                      data-confirm-danger="1"
+                    >
+                      <i class="ri-restart-line"></i>
+                      <span data-i18n="set.resetBtn">Reset</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- The slide-over quick-settings panel was removed: the topbar gear and
+         the sidebar entry open the full Settings page directly. -->
+
+    <form id="logoutForm" action="http://localhost:8000/logout" method="POST" class="hidden">
+      <input type="hidden" name="_token" value="dhgDXOiJnPYoO9g8Gl7JWEqOUkwCZYaFRSgpJXDL" autocomplete="off">    </form>
+
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal" id="modal">
+        <div class="modal-header">
+          <h3 id="modalTitle">Title</h3>
+          <button class="modal-close" id="modalClose">
+            <i class="ri-close-line"></i>
+          </button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+        <div class="modal-footer" id="modalFooter"></div>
+      </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ===== MOBILE BOTTOM NAV (Home / Batch / Scan / History / More) ===== -->
+    <nav class="mobile-bottom-nav" id="mobileNav">
+      <a class="mobile-nav-item active" data-page="dashboard">
+        <i class="ri-home-5-line"></i><span data-i18n="nav.dashboard">Home</span>
+      </a>
+      <a class="mobile-nav-item" data-page="batch">
+        <i class="ri-stack-line"></i><span data-i18n="nav.batchShort">Batch</span>
+      </a>
+      <a class="mobile-nav-item camera-nav" data-page="scan">
+        <i class="ri-camera-lens-line"></i><span data-i18n="nav.scan">Scan</span>
+      </a>
+      <a class="mobile-nav-item" data-page="history">
+        <i class="ri-history-line"></i><span data-i18n="nav.historyShort">History</span>
+      </a>
+              <a class="mobile-nav-item" data-page="notifications">
+          <i class="ri-notification-3-line"></i><span data-i18n="nav.notifications">Notifications</span>
+        </a>
+          </nav>
+
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                /* updateViaCache: 'none' stops the browser from reusing a cached
+                   copy of sw.js itself, so fixes here ship immediately. */
+                navigator.serviceWorker
+                    .register("http://localhost:8000/sw.js", { updateViaCache: 'none' })
+                    .catch(function () {});
+
+                /* Reload once when a newer worker takes control, so long-lived
+                   tabs never run an old bundle against a newer backend. */
+                var hadController = !!navigator.serviceWorker.controller;
+                var refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', function () {
+                    if (!hadController || refreshing) return;
+                    refreshing = true;
+                    window.location.reload();
+                });
+            });
+        }
+    </script>
+
+        <script src="http://localhost:8000/vendor/js/jspdf.umd.min.js?v=1792593633"></script>
+    <script src="http://localhost:8000/vendor/js/jspdf.plugin.autotable.min.js?v=1792593633"></script>
+    <script>
+      window.DASHBOARD_DATA = {"user":{"name":"Snapshot Customer","email":"customer@snapshot.test","role":"customer","role_label":"Customer","initials":"SC","is_vendor":false},"stats":{"total":0,"fresh":0,"moderate":0,"not_fresh":0,"week":0},"unread_count":0,"notifications":[]};
+    </script>
+    
+            <script src="http://localhost:8000/js/dashboard/core.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/preferences.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/i18n.js?v=1792723617"></script>
+            <script src="http://localhost:8000/js/dashboard/settings-engine.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/sections.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/toast.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/notifications.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/topbar.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/search.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/history.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/scan.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/analyze.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/dialogs.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/batch.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/inventory.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/suppliers.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/deliveries.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/reports.js?v=1792722954"></script>
+            <script src="http://localhost:8000/js/dashboard/profile.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/settings-page.js?v=1792629469"></script>
+            <script src="http://localhost:8000/js/dashboard/init.js?v=1792629469"></script>
+    </body>
+
+</html>
