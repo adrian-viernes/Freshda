@@ -21,6 +21,9 @@
                     title="{{ $user->name }}"
                   >
                     {{ $user->initials() }}
+                    @if ($user->profilePictureUrl())
+                      <img src="{{ $user->profilePictureUrl() }}" alt="{{ $user->name }}" />
+                    @endif
                   </div>
                 </div>
 

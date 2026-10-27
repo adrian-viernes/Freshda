@@ -29,6 +29,44 @@ In addition, [Laracasts](https://laracasts.com) contains thousands of video tuto
 
 You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
 
+## Collaborator Setup Guide
+
+To run Fresh-DA on your local machine:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/adrian-viernes/Freshda.git
+   cd Freshda/Freshda
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **Configure environment:**
+   ```bash
+   copy .env.example .env
+   php artisan key:generate
+   ```
+   Add your team `ROBOFLOW_API_KEY` in `.env` to enable live fish AI scanning:
+   ```env
+   ROBOFLOW_API_KEY=your_team_key_here
+   ```
+
+4. **Prepare database & storage symlink:**
+   ```bash
+   php artisan migrate
+   php artisan storage:link
+   ```
+
+5. **Start the local server:**
+   ```bash
+   php artisan serve
+   ```
+   Open `http://127.0.0.1:8000` in your browser.
+
 ## Roboflow Workflow Integration
 
 Fresh-DA integrates the Roboflow Serverless Workflow **"FRESH-DA PROJECT vfresh-da-project-4-vit_small_patch16_dinov3.lvd1689m-t1 Logic"** for species identification and freshness analysis.

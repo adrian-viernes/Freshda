@@ -43,12 +43,11 @@
               btn.disabled = false;
               btn.innerHTML = originalHtml;
               if (!result.id) {
-                showToast(
-                  (result && result.errors && Object.keys(result.errors).length
-                    ? "Please Choose a Valid Fish Image"
-                    : result.message) || "Scan Failed — Please Try Again",
-                  "error",
-                );
+                var errorMsg =
+                  (result && result.errors && result.errors.image && result.errors.image[0]) ||
+                  (result && result.message) ||
+                  "No fish detected. Please position the fish clearly in frame and scan again.";
+                showNoFishModal(errorMsg);
                 return;
               }
               addRecentScan(result);
@@ -185,6 +184,62 @@
           '<td><span class="mobile-label">Date</span>Just now</td>' +
           '<td><span class="mobile-label">Type</span>Single</td>';
         tbody.insertBefore(tr, tbody.firstChild);
+      }
+
+      function showNoFishModal(customMsg) {
+        var modal = document.getElementById("modalOverlay");
+        if (!modal) return;
+
+        var cleanMsg = "We couldn't clearly detect a fish in the scanned image. Please position the fish in clear lighting and scan again.";
+        if (customMsg && typeof customMsg === "string" && customMsg.indexOf("%") === -1 && customMsg.toLowerCase().indexOf("status") === -1) {
+          cleanMsg = customMsg;
+        }
+
+        document.getElementById("modalTitle").textContent = "No Fish Detected";
+        document.getElementById("modalBody").innerHTML =
+          '<div style="text-align:center; padding:0.5rem 0 0.5rem;">' +
+          '<div style="width:3.8rem; height:3.8rem; border-radius:50%; background:#fef3c7; color:#d97706; display:inline-flex; align-items:center; justify-content:center; font-size:1.9rem; margin-bottom:0.85rem; box-shadow:0 4px 12px rgba(217, 119, 6, 0.15);">' +
+          '<i class="ri-focus-3-line"></i>' +
+          '</div>' +
+          '<h3 style="font-size:1.18rem; font-weight:700; color:var(--dark); margin-bottom:0.5rem;">Please Position the Fish Clearly</h3>' +
+          '<p style="font-size:0.88rem; color:var(--muted); line-height:1.55; max-width:360px; margin:0 auto 1.25rem;">' +
+          escapeHtml(cleanMsg) +
+          '</p>' +
+          '<div style="background:var(--off-white); border:1px solid var(--border-soft); border-radius:12px; padding:0.9rem 1.1rem; text-align:left; font-size:0.82rem;">' +
+          '<div style="font-weight:600; color:var(--primary); margin-bottom:0.45rem; display:flex; align-items:center; gap:0.4rem;">' +
+          '<i class="ri-lightbulb-line" style="font-size:1rem;"></i> Tips for Best Results:' +
+          '</div>' +
+          '<ul style="margin:0; padding-left:1.25rem; color:var(--muted); line-height:1.65;">' +
+          '<li>Place the whole fish or fish head clearly within view</li>' +
+          '<li>Avoid strong glare, dark shadows, or blurry motion</li>' +
+          '<li>Ensure adequate and even lighting</li>' +
+          '</ul>' +
+          '</div>' +
+          '</div>';
+
+        var footer = document.getElementById("modalFooter");
+        footer.innerHTML = "";
+
+        var retryBtn = document.createElement("button");
+        retryBtn.className = "btn btn-primary btn-block";
+        retryBtn.style.padding = "0.75rem 1rem";
+        retryBtn.style.fontWeight = "600";
+        retryBtn.innerHTML = '<i class="ri-camera-lens-line"></i> Scan Again';
+        retryBtn.addEventListener("click", function () {
+          modal.classList.remove("open");
+          var clearBtn = document.getElementById("uploadFileClear");
+          if (clearBtn) clearBtn.click();
+          var cameraBtn = document.getElementById("openCameraBtn");
+          if (cameraBtn && !cameraBtn.classList.contains("hidden")) {
+            cameraBtn.click();
+          } else {
+            var uploadBtn = document.getElementById("uploadFile");
+            if (uploadBtn) uploadBtn.click();
+          }
+        });
+
+        footer.appendChild(retryBtn);
+        modal.classList.add("open");
       }
 
       function showAnalysisResult(result) {

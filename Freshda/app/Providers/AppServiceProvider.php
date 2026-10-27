@@ -12,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(RoboflowWorkflowClient::class, function () {
+        $this->app->bind(RoboflowWorkflowClient::class, function () {
             return RoboflowWorkflowClient::fromConfig();
         });
     }

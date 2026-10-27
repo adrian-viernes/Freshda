@@ -114,6 +114,7 @@ class FishAiService
         $percentage = random_int($min, $max);
 
         return [
+            'is_fish' => true,
             'species' => $species,
             'species_label' => $label,
             'species_confidence' => round(random_int(8500, 9900) / 10000, 2),
@@ -121,6 +122,7 @@ class FishAiService
             'freshness_percentage' => $percentage,
             'freshness_confidence' => round($percentage / 100, 2),
             'source' => 'simulated',
+            'message' => 'Analysis Complete — AI Service Offline, Simulated Result Shown.',
         ];
     }
 
@@ -234,14 +236,32 @@ class FishAiService
 
         $percentage = (int) round(self::clamp01($topFreshnessConf) * 100);
 
+        $minConfidence = (float) config('roboflow.min_confidence', 0.60);
+        $invalidSpecies = ['other fishes', 'other fish', 'unknown', 'none'];
+
+        $isFish = true;
+        $rejectReason = null;
+
+        if ($topSpecies === null || in_array(strtolower($topSpecies), $invalidSpecies, true)) {
+            $isFish = false;
+            $rejectReason = 'No fish detected. Please position the fish clearly in frame and scan again.';
+        } elseif ($topSpeciesConf < $minConfidence) {
+            $isFish = false;
+            $rejectReason = 'Unclear fish detection. Please ensure good lighting, hold the camera steady, and scan again.';
+        }
+
         return [
-            'species' => $topSpecies,
-            'species_label' => self::latinFor($topSpecies),
+            'is_fish' => $isFish,
+            'species' => $topSpecies ?? 'Other Fishes',
+            'species_label' => self::latinFor($topSpecies ?? 'Other Fishes'),
             'species_confidence' => self::clamp01($topSpeciesConf),
             'freshness' => $topFreshness,
             'freshness_percentage' => max(0, min(100, $percentage)),
             'freshness_confidence' => self::clamp01($topFreshnessConf),
             'source' => 'ai',
+            'message' => $isFish
+                ? 'Analysis Complete — AI Model Result.'
+                : ($rejectReason ?? 'No fish detected. Please position the fish clearly in frame and scan again.'),
         ];
     }
 
@@ -299,6 +319,7 @@ class FishAiService
         $freshnessConfidence = $payload['freshness_confidence'] ?? null;
 
         return [
+            'is_fish' => true,
             'species' => $species,
             'species_label' => $label === '' ? self::latinFor($species) : $label,
             'species_confidence' => self::clamp01((float) $speciesConfidence),
@@ -308,6 +329,7 @@ class FishAiService
                 ? self::clamp01((float) $freshnessConfidence)
                 : round($percentage / 100, 2),
             'source' => 'ai',
+            'message' => 'Analysis Complete — AI Model Result.',
         ];
     }
 

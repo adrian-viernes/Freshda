@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\FishAiService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class PublicScanController extends Controller
 {
@@ -29,6 +30,13 @@ class PublicScanController extends Controller
         $imagePath = $image !== null && $image->isValid() ? $image->getRealPath() : null;
 
         $result = app(FishAiService::class)->predict($imagePath ?: null);
+
+        /* Rejects non-fish images (e.g. persons, backgrounds, or low confidence) */
+        if (isset($result['is_fish']) && ! $result['is_fish']) {
+            throw ValidationException::withMessages([
+                'image' => $result['message'] ?? 'No fish detected. Please position the fish clearly in frame and scan again.',
+            ]);
+        }
 
         return response()->json([
             'name' => $result['species'],

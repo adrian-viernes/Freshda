@@ -6,6 +6,8 @@ use App\Models\InventoryItem;
 use App\Models\Scan;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Records what an authenticated scan found: the scan row itself, the alert it
@@ -28,11 +30,22 @@ class ScanService
             $imagePath = $image->store('scans', 'public');
         }
 
-        $absolutePath = $imagePath === null ? null : storage_path('app/public/'.$imagePath);
+        $absolutePath = $imagePath === null ? null : Storage::disk('public')->path($imagePath);
 
         /* The model service answers when it is connected (source "ai");
            FishAiService degrades to a simulated result when it is not. */
         $result = app(FishAiService::class)->predict($absolutePath);
+
+        /* Rejects non-fish images (e.g. persons, backgrounds, or low confidence) */
+        if (isset($result['is_fish']) && ! $result['is_fish']) {
+            if ($imagePath !== null) {
+                Storage::disk('public')->delete($imagePath);
+            }
+
+            throw ValidationException::withMessages([
+                'image' => $result['message'] ?? 'No fish detected. Please position the fish clearly in frame and scan again.',
+            ]);
+        }
 
         $scan = $user->scans()->create([
             'image_path' => $imagePath,

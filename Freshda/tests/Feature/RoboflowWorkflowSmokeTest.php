@@ -110,6 +110,7 @@ class RoboflowWorkflowSmokeTest extends TestCase
         $scan = FishAiService::fromRoboflowOutputs($roboflowOutput);
 
         $this->assertNotNull($scan);
+        $this->assertTrue($scan['is_fish']);
         $this->assertSame('Galonggong', $scan['species']);
         $this->assertSame('Decapterus macarellus', $scan['species_label']);
         $this->assertSame(0.85, $scan['species_confidence']);
@@ -117,6 +118,46 @@ class RoboflowWorkflowSmokeTest extends TestCase
         $this->assertSame(92, $scan['freshness_percentage']);
         $this->assertSame(0.92, $scan['freshness_confidence']);
         $this->assertSame('ai', $scan['source']);
+    }
+
+    public function test_it_rejects_images_classified_as_other_fishes(): void
+    {
+        $roboflowOutput = [
+            'predictions' => [
+                'predictions' => [
+                    'Other Fishes' => ['confidence' => 0.82, 'class_id' => 5],
+                    'Not Fresh' => ['confidence' => 0.70, 'class_id' => 4],
+                ],
+                'predicted_classes' => ['Other Fishes', 'Not Fresh'],
+            ],
+        ];
+
+        $scan = FishAiService::fromRoboflowOutputs($roboflowOutput);
+
+        $this->assertNotNull($scan);
+        $this->assertFalse($scan['is_fish']);
+        $this->assertStringContainsString('No fish detected', $scan['message']);
+    }
+
+    public function test_it_rejects_predictions_below_confidence_threshold(): void
+    {
+        config(['roboflow.min_confidence' => 0.70]);
+
+        $roboflowOutput = [
+            'predictions' => [
+                'predictions' => [
+                    'Bangus' => ['confidence' => 0.52, 'class_id' => 0],
+                    'Fresh' => ['confidence' => 0.60, 'class_id' => 2],
+                ],
+                'predicted_classes' => ['Bangus', 'Fresh'],
+            ],
+        ];
+
+        $scan = FishAiService::fromRoboflowOutputs($roboflowOutput);
+
+        $this->assertNotNull($scan);
+        $this->assertFalse($scan['is_fish']);
+        $this->assertStringContainsString('Unclear fish detection', $scan['message']);
     }
 
     public function test_live_workflow_smoke_test_when_configured(): void
@@ -134,15 +175,10 @@ class RoboflowWorkflowSmokeTest extends TestCase
         $this->assertArrayHasKey('predictions', $outputs);
         $this->assertIsArray($outputs['predictions']);
 
-        // Assert mapping into scan contract works
+        // Since sampleImagePath() is an app icon (not a fish), it must be safely identified as not a fish
         $scan = FishAiService::fromRoboflowOutputs($outputs);
         $this->assertNotNull($scan);
-        $this->assertArrayHasKey('species', $scan);
-        $this->assertArrayHasKey('species_label', $scan);
-        $this->assertArrayHasKey('species_confidence', $scan);
-        $this->assertArrayHasKey('freshness', $scan);
-        $this->assertArrayHasKey('freshness_percentage', $scan);
-        $this->assertArrayHasKey('freshness_confidence', $scan);
-        $this->assertSame('ai', $scan['source']);
+        $this->assertFalse($scan['is_fish']);
+        $this->assertStringContainsString('fish', strtolower($scan['message']));
     }
 }

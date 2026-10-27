@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class PublicScanTest extends TestCase
@@ -51,6 +52,35 @@ class PublicScanTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
+    }
+
+    public function test_the_public_analyzer_rejects_non_fish_images(): void
+    {
+        config(['roboflow.api_key' => 'rf_test_key']);
+
+        Http::fake([
+            'serverless.roboflow.com/*' => Http::response([
+                'outputs' => [
+                    [
+                        'predictions' => [
+                            'predictions' => [
+                                'Other Fishes' => ['confidence' => 0.85, 'class_id' => 5],
+                                'Not Fresh' => ['confidence' => 0.70, 'class_id' => 4],
+                            ],
+                            'predicted_classes' => ['Other Fishes', 'Not Fresh'],
+                        ],
+                    ],
+                ],
+            ], 200),
+        ]);
+
+        $response = $this->postJson('/scan/analyze', [
+            'image' => UploadedFile::fake()->image('person.jpg'),
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['image']);
+        $this->assertStringContainsString('No fish detected', $response->json('errors.image.0'));
     }
 
     public function test_the_public_endpoint_is_throttled_for_anonymous_abuse(): void

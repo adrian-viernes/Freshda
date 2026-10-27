@@ -350,9 +350,36 @@
 
         </section>
 
-
-
     </main>
+
+    <!-- Centered Friendly Notice Modal -->
+    <div class="modal-overlay" id="publicScanModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(15, 23, 42, 0.6); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:1rem;">
+        <div class="modal-card" style="background:#fff; border-radius:18px; max-width:440px; width:100%; box-shadow:0 20px 40px rgba(0,0,0,0.2); overflow:hidden;">
+            <div style="padding:1.75rem 1.5rem 1.25rem; text-align:center;">
+                <div style="width:3.8rem; height:3.8rem; border-radius:50%; background:#fef3c7; color:#d97706; display:inline-flex; align-items:center; justify-content:center; font-size:1.9rem; margin-bottom:0.85rem; box-shadow:0 4px 12px rgba(217, 119, 6, 0.15);">
+                    <i class="ri-focus-3-line"></i>
+                </div>
+                <h3 style="font-size:1.2rem; font-weight:700; color:#1e293b; margin-bottom:0.5rem;">Please Position the Fish Clearly</h3>
+                <p id="publicScanModalText" style="font-size:0.88rem; color:#64748b; line-height:1.55; margin-bottom:1.25rem;">
+                    We couldn't clearly detect a fish in the scanned image. Please position the fish in clear lighting and scan again.
+                </p>
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:0.9rem 1.1rem; text-align:left; font-size:0.82rem; margin-bottom:1.5rem;">
+                    <div style="font-weight:600; color:#0284c7; margin-bottom:0.45rem; display:flex; align-items:center; gap:0.4rem;">
+                        <i class="ri-lightbulb-line" style="font-size:1rem;"></i> Tips for Best Results:
+                    </div>
+                    <ul style="margin:0; padding-left:1.25rem; color:#64748b; line-height:1.65;">
+                        <li>Place the whole fish or fish head clearly within view</li>
+                        <li>Avoid strong glare, dark shadows, or blurry motion</li>
+                        <li>Ensure adequate and even lighting</li>
+                    </ul>
+                </div>
+                <button type="button" class="scan-btn scan-again" id="publicScanModalRetryBtn" style="width:100%; justify-content:center; padding:0.85rem 1rem; font-size:0.95rem; font-weight:600; margin-bottom:0.5rem;">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    Scan Again
+                </button>
+            </div>
+        </div>
+    </div>
 
 @endsection
 

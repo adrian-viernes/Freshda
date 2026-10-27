@@ -52,4 +52,15 @@ return [
 
     'retry_sleep_ms' => (int) env('ROBOFLOW_RETRY_SLEEP_MS', 500),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Minimum Confidence Threshold for Fish Detection
+    |--------------------------------------------------------------------------
+    |
+    | Predictions with species confidence below this threshold or classified
+    | as "Other Fishes" are rejected as non-fish images.
+    |
+    */
+    'min_confidence' => (float) env('ROBOFLOW_MIN_CONFIDENCE', 0.60),
+
 ];

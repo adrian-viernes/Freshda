@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\FishAiService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -282,5 +283,42 @@ class ScanFlowTest extends TestCase
         $html = (string) $this->actingAs($user)->get('/dashboard')->assertOk()->getContent();
 
         $this->assertStringContainsString('0.93 · High', $html);
+    }
+
+    public function test_authenticated_scanner_rejects_non_fish_images_without_saving(): void
+    {
+        Storage::fake('public');
+        config(['roboflow.api_key' => 'rf_test_key']);
+
+        Http::fake([
+            'serverless.roboflow.com/*' => Http::response([
+                'outputs' => [
+                    [
+                        'predictions' => [
+                            'predictions' => [
+                                'Other Fishes' => ['confidence' => 0.88, 'class_id' => 5],
+                                'Not Fresh' => ['confidence' => 0.65, 'class_id' => 4],
+                            ],
+                            'predicted_classes' => ['Other Fishes', 'Not Fresh'],
+                        ],
+                    ],
+                ],
+            ], 200),
+        ]);
+
+        $user = User::factory()->vendor()->create();
+
+        $response = $this->actingAs($user)->postJson('/scans', [
+            'image' => UploadedFile::fake()->image('person_face.jpg', 640, 480),
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['image']);
+        $this->assertStringContainsString('No fish detected', $response->json('errors.image.0'));
+
+        // Assert nothing is saved to database or storage
+        $this->assertDatabaseCount('scans', 0);
+        $this->assertDatabaseCount('app_notifications', 0);
+        $this->assertSame(0, count(Storage::disk('public')->files('scans')));
     }
 }

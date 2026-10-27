@@ -214,8 +214,8 @@ class ProfileUpdateTest extends TestCase
     }
 
     /**
-     * The uploaded photo has to show up in the topbar and the sidebar footer,
-     * not only on the profile page itself.
+     * The uploaded photo has to show up in the topbar, sidebar footer, and
+     * the profile page itself.
      */
     public function test_the_uploaded_photo_is_rendered_in_every_avatar(): void
     {
@@ -223,7 +223,7 @@ class ProfileUpdateTest extends TestCase
 
         $html = (string) $this->actingAs($user)->get('/dashboard')->assertOk()->getContent();
 
-        $this->assertSame(2, substr_count($html, Storage::url('profile-pictures/me.jpg')));
+        $this->assertSame(3, substr_count($html, Storage::url('profile-pictures/me.jpg')));
     }
 
     public function test_avatars_fall_back_to_initials_without_a_photo(): void

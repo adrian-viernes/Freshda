@@ -251,9 +251,17 @@ document.addEventListener("DOMContentLoaded", function () {
         if (response.status === 429) {
           throw new Error("Too Many Requests — Please Wait A Minute And Try Again.");
         }
-        return response.ok
-          ? response.json()
-          : Promise.reject(new Error("The Analysis Could Not Run. Please Try Again."));
+        if (!response.ok) {
+          return response.json().then(function (err) {
+            var msg = (err && err.errors && err.errors.image && err.errors.image[0])
+              || (err && err.message)
+              || "The Analysis Could Not Run. Please Try Again.";
+            throw new Error(msg);
+          }).catch(function (fallbackErr) {
+            throw new Error(fallbackErr.message || "The Analysis Could Not Run. Please Try Again.");
+          });
+        }
+        return response.json();
       })
       .then(function (data) {
         var freshnessLabels = {
@@ -297,7 +305,23 @@ document.addEventListener("DOMContentLoaded", function () {
         result.scrollIntoView({ behavior: "smooth", block: "nearest" });
       })
       .catch(function (error) {
-        showError(error.message || "The Analysis Could Not Run.");
+        var modal = document.getElementById("publicScanModalOverlay");
+        var modalText = document.getElementById("publicScanModalText");
+        var isFishError = error.message && (
+          error.message.toLowerCase().indexOf("fish") !== -1 ||
+          error.message.toLowerCase().indexOf("unclear") !== -1
+        );
+
+        if (modal && isFishError) {
+          if (modalText) {
+            modalText.textContent = error.message.indexOf("%") === -1
+              ? error.message
+              : "We couldn't clearly detect a fish in the scanned image. Please position the fish in clear lighting and scan again.";
+          }
+          modal.style.display = "flex";
+        } else {
+          showError(error.message || "The Analysis Could Not Run.");
+        }
       })
       .finally(function () {
         analyzeBtn.disabled = !selectedFile;
@@ -306,6 +330,24 @@ document.addEventListener("DOMContentLoaded", function () {
         submitting = false;
       });
   });
+
+  var modalRetryBtn = document.getElementById("publicScanModalRetryBtn");
+  var modalOverlay = document.getElementById("publicScanModalOverlay");
+  if (modalRetryBtn && modalOverlay) {
+    modalRetryBtn.addEventListener("click", function () {
+      modalOverlay.style.display = "none";
+      resetView();
+      var camBtn = document.getElementById("scanCameraBtn");
+      if (camBtn && !camBtn.classList.contains("hidden")) {
+        camBtn.click();
+      } else {
+        fileInput.click();
+      }
+    });
+    modalOverlay.addEventListener("click", function (e) {
+      if (e.target === this) this.style.display = "none";
+    });
+  }
 
   if (againBtn) {
     againBtn.addEventListener("click", resetView);
