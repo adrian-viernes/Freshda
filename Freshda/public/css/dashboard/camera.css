@@ -1,0 +1,179 @@
+      /* ---- live camera (getUserMedia) ---- */
+      .camera-preview .camera-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .camera-preview.camera-live .camera-placeholder,
+      .camera-preview.has-snapshot .camera-placeholder {
+        display: none;
+      }
+      .camera-preview .camera-video {
+        display: none;
+        width: 100%;
+        max-height: 260px;
+        border-radius: 8px;
+        background: #000;
+        object-fit: cover;
+      }
+      .camera-preview.camera-live .camera-video {
+        display: block;
+      }
+      .camera-preview .camera-snapshot {
+        display: none;
+      }
+      .camera-preview.has-snapshot .camera-snapshot {
+        display: block;
+        max-width: 100%;
+        max-height: 260px;
+        border-radius: 8px;
+      }
+      .camera-preview.camera-live .camera-snapshot {
+        display: none;
+      }
+
+      /* ---- Large camera viewfinder (~5–6 in tall on a phone) ----
+         Applies to both the Scan Fish and the Batch capture previews. */
+      .camera-preview {
+        padding: 1rem;
+        min-height: clamp(24rem, 70vh, 36rem);
+      }
+      .camera-preview .camera-video,
+      .camera-preview.has-snapshot .camera-snapshot {
+        width: 100%;
+        height: clamp(24rem, 70vh, 36rem);
+        max-height: none;
+        object-fit: cover;
+      }
+      .camera-preview .camera-placeholder i {
+        font-size: 3.4rem;
+      }
+      .camera-preview .camera-placeholder p {
+        font-size: 1rem;
+      }
+      .camera-preview .camera-live-badge {
+        position: absolute;
+        top: 0.6rem;
+        left: 0.6rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        margin-top: 0;
+        padding: 0.2rem 0.55rem;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.74);
+        color: #fff;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+      }
+      .camera-live-badge .camera-live-dot {
+        display: inline-block;
+        width: 0.42rem;
+        height: 0.42rem;
+        margin-top: 0;
+        border-radius: 50%;
+        background: #ef4444;
+        animation: cameraLivePulse 1.4s ease-in-out infinite;
+      }
+      @keyframes cameraLivePulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.2;
+        }
+      }
+      .camera-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .camera-actions .btn {
+        flex: 1 1 auto;
+      }
+      .camera-actions .btn-block {
+        flex: 1 1 100%;
+      }
+
+      .image-preview-box {
+        background: var(--off-white);
+        border-radius: 10px;
+        padding: 1.5rem;
+        text-align: center;
+        border: 1px solid var(--border);
+        min-height: clamp(16rem, 52vh, 28rem);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .image-preview-box img {
+        max-width: 100%;
+        max-height: clamp(15rem, 50vh, 26rem);
+        border-radius: 8px;
+        object-fit: contain;
+      }
+
+      .processing-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+      .processing-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        font-size: 0.81rem;
+        color: var(--muted);
+      }
+      .processing-item i {
+        font-size: 1.02rem;
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+      }
+      .processing-item i.ok {
+        color: var(--primary);
+      }
+      .processing-item i.warn {
+        color: var(--muted-soft);
+      }
+
+      .stars {
+        display: flex;
+        gap: 0.35rem;
+        font-size: 1.55rem;
+        color: var(--primary);
+      }
+      .stars i {
+        cursor: pointer;
+        transition: transform 0.15s ease;
+      }
+      .stars i:hover {
+        transform: scale(1.15);
+      }
+
+      .flex {
+        display: flex;
+      }
+      .flex-between {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .flex-col {
+        display: flex;
+        flex-direction: column;
+      }
+      .items-center {
+        align-items: center;
+      }
+      .gap-1 {
+        gap: 0.5rem;
+      }
+      .gap-2 {
+        gap: 1.35rem;
+      }
+

@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "skills": {
+    "draw-vision": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/draw-vision/SKILL.md",
+      "computedHash": "f7369bb108ab177b2a87aa9885e1726f2be1db7ffc99f36e1996a33817ccd10f"
+    },
+    "roboflow-api-reference": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/roboflow-api-reference/SKILL.md",
+      "computedHash": "1cce7fe6101c1bfd65c81abbe9f11713acaffdb10d656ca703be2665b646ce6d"
+    },
+    "roboflow-batch-processing": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/roboflow-batch-processing/SKILL.md",
+      "computedHash": "c44fbdb676181c128d246eadca72169b3c59aa62504f83a7dc59a89c9c483a9b"
+    },
+    "roboflow-cloud-storage": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/roboflow-cloud-storage/SKILL.md",
+      "computedHash": "340099fb7e28e19ba3f6feeb9aff5f7a5213ced2fecc710a9784e706669c4e06"
+    },
+    "roboflow-custom-weights-upload": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/roboflow-custom-weights-upload/SKILL.md",
+      "computedHash": "14b960037f6ec7e6dcebacdc748150147df96fd3764cc10d1ced5cfb84ec313b"
+    },
+    "roboflow-data-management": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/roboflow-data-management/SKILL.md",
+      "computedHash": "b4cc5faf4794c68b3dcea71b87a42f0ca6cb3dcd085629fdb5d84406efe714e4"
+    },
+    "roboflow-inference": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/roboflow-inference/SKILL.md",
+      "computedHash": "0908463d444777978bc1374b99c74ea7a5fcd29cb5b8e0d8168eee24c337e9d4"
+    },
+    "roboflow-plans-and-pricing": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/roboflow-plans-and-pricing/SKILL.md",
+      "computedHash": "1820b945a67f1304fde99fa6dc1216228a5efeb85f650e02a8d615ca95aa3a7b"
+    },
+    "roboflow-product-navigation": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/roboflow-product-navigation/SKILL.md",
+      "computedHash": "0e6db1f5014f1e0bf8cbe5c421c26f7ad578c2f79fc838d379cfcc9a5b60a31d"
+    },
+    "roboflow-training-and-evaluation": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/roboflow-training-and-evaluation/SKILL.md",
+      "computedHash": "2d42c10d68f2cef156ced4193c5f9068ea988c05712d98bcca5726e338d7ad99"
+    },
+    "roboflow-universe": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/roboflow-universe/SKILL.md",
+      "computedHash": "78c288c72ba91cf92c27ba77fa0067c39653e147f87f607a9649cfd02af56052"
+    },
+    "workflow-from-eval": {
+      "source": "roboflow/computer-vision-skills",
+      "sourceType": "github",
+      "skillPath": "skills/workflow-from-eval/SKILL.md",
+      "computedHash": "8b9ce079ce7067f4b7865c819d092002a36fc3acb46c66c5254fe7e743e06f50"
+    }
+  }
+}
