@@ -1,0 +1,25 @@
+# Fresh-DA — defence in depth.
+#
+# Laragon normally auto-detects Laravel and points the virtual host at /public.
+# If a vhost is ever misconfigured to serve the project root instead, this file
+# (a) blocks direct access to secrets/source and (b) forwards traffic into /public,
+# so .env, the database, logs and backups can never be downloaded over HTTP.
+#
+# When the docroot is already /public, this file is never consulted and has no effect.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block dotfiles such as .env, .git and .env.backup.
+    RewriteRule (^|/)\. - [F,L]
+
+    # Block direct access to source, storage and backup directories.
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor|_freshda_backup)(/|$) - [F,L]
+
+    # Forward everything else into the public web root.
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Never list directory contents.
+Options -Indexes

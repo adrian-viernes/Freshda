@@ -1,0 +1,54 @@
+/* ============ REPORTS PAGE ============ */
+/* One card carries the report picker, the date range it applies to, the
+   optional remarks and the two export buttons. */
+.report-options {
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) minmax(0, 2fr);
+  gap: 1rem;
+  align-items: end;
+}
+
+.report-range {
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.report-range .form-label {
+  margin: 0;
+}
+
+.report-range-note {
+  font-size: 0.76rem;
+  margin: -0.4rem 0 0;
+}
+
+.report-remarks textarea {
+  min-height: 64px;
+}
+
+/* The stock reports are a snapshot of right now, so their range is hidden —
+   [hidden] has to beat the display rule above. */
+.report-range[hidden],
+.report-range-note[hidden] {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .export-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .export-card-body {
+    padding: 1rem;
+  }
+
+  .report-options {
+    grid-template-columns: 1fr;
+  }
+
+  .report-range {
+    grid-template-columns: 1fr;
+  }
+}

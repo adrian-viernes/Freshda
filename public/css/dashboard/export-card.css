@@ -1,0 +1,180 @@
+/* ============ HISTORY EXPORT CARD ============ */
+.export-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  transition: box-shadow 0.25s ease;
+}
+
+.export-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.export-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.export-card-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  background: var(--primary-tint);
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+body.dark .export-card-icon {
+  color: var(--primary-light);
+}
+
+.export-card-header h2 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.export-card-header p {
+  font-size: 0.76rem;
+  margin-top: 0.2rem;
+}
+
+.export-card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.export-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+.export-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--dark);
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.export-btn:hover {
+  transform: translateY(-2px);
+}
+
+.export-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.export-btn-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.export-btn.csv {
+  border-color: rgba(22, 163, 74, 0.25);
+}
+
+.export-btn.csv .export-btn-icon {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.export-btn.csv:hover {
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+
+.export-btn.csv:hover .export-btn-icon {
+  background: var(--success);
+  color: #ffffff;
+}
+
+.export-btn.pdf {
+  border-color: rgba(220, 38, 38, 0.25);
+}
+
+.export-btn.pdf .export-btn-icon {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.export-btn.pdf:hover {
+  border-color: var(--danger);
+  background: var(--danger-bg);
+}
+
+.export-btn.pdf:hover .export-btn-icon {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+.export-btn-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.export-btn-label strong {
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.export-btn-label span {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.export-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: var(--off-white);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+}
+
+.export-info i {
+  font-size: 1.1rem;
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.export-info span {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
